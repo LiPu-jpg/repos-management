@@ -1,0 +1,51 @@
+name: Reusable Workflow To Update Worktree and Trigger Workflow
+
+on:
+  workflow_call:
+    inputs:
+      trigger_page_build:
+        description: 'Set to true to trigger the whole hoa-moe page build workflow'
+        required: false
+        default: false
+        type: boolean
+    secrets:
+      PAT:
+        description: 'Personal Access Token'
+        required: true
+
+jobs:
+  generate_worktree_info:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Fetch and run generate_worktree_info.py script
+        run: |
+          # Download the script
+          curl -o /tmp/generate_worktree_info.py \
+          https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/generate_worktree_info.py
+          
+          # Make it executable and run it
+          chmod +x /tmp/generate_worktree_info.py
+          python3 /tmp/generate_worktree_info.py
+
+      - name: Trigger workflow in hoa-moe (optional)
+        if: inputs.trigger_page_build == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            https://api.github.com/repos/HITSZ-OpenAuto/hoa-moe/actions/workflows/course.yaml/dispatches \
+            -d '{"ref":"main"}'

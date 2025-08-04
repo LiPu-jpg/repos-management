@@ -170,7 +170,7 @@ def collect_info_and_saved_to_another_branch(worktree_branch_name: str):
     save_json(f"history/{info_commit_hash}.json", info)
 
     prepare_user_info()
-    cmd(["git", "add", "."])
+    cmd(["git", "add", "worktree.json", "history/"])
     cmd(["git", "commit", "-m", f"update worktree info for <|{info_commit_hash}|>"])
     cmd(["git", "push", "--set-upstream", "origin", worktree_branch_name])
     logger.info("Worktree info collected and saved to another branch")
