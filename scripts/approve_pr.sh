@@ -8,8 +8,9 @@ REPOS=$(cat repos_list.txt) # repos_list.txt 需要和本脚本在同一目录�
 source .env
 
 for REPO in $REPOS; do
-  # Fetch the latest pull request number using GitHub CLI
-  PR_NUMBER=$(gh pr list -R "HITSZ-OpenAuto/$REPO" --limit 1 --json number -q '.[0].number')
+  # Fetch number of the PR with '[automated-generate-PR]' in the title
+  # By default, fetch the number of the latest PR
+  PR_NUMBER=$(gh pr list -R "HITSZ-OpenAuto/$REPO" --search "${PR_MARKER} in:title" --json number -q '.[0].number')
 
   if [ -z "$PR_NUMBER" ]; then
     echo "No open pull requests found for $REPO"

@@ -125,7 +125,7 @@ for REPO in $REPOS; do
   fi
 
   # Create a pull request
-  PR_RESULT=$(gh pr create -R "HITSZ-OpenAuto/$REPO" -B main -H "$BRANCH_NAME" -t "ci: updated worktree.json generation" -b "更新生成 worktree 文件的脚本" 2>&1)
+  PR_RESULT=$(gh pr create -R "HITSZ-OpenAuto/$REPO" -B main -H "$BRANCH_NAME" -t "${PR_MARKER} ci: updated worktree.json generation" -b "更新生成 worktree 文件的脚本" 2>&1)
   PR_EXIT_CODE=$?
   
   if [ $PR_EXIT_CODE -eq 0 ]; then
