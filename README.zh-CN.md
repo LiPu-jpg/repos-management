@@ -50,7 +50,7 @@
 
 批量为 [`repos_list.txt`](./repos_list.txt) 下所有仓库添加/覆写 workflow 文件
 
-- 若需覆写，请将更新内容写在 `read -r -d '' WORKFLOW_CONTENT << 'EOF'` 后面
+- 若需覆写，请将更新内容写在 `cat << EOF` 后面
 
 ### pull_or_clone.py
 

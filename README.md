@@ -52,7 +52,7 @@ Batch approve the latest PRs for all repositories listed in [`repos_list.txt`](.
 
 Batch add/overwrite workflow files for all repositories listed in [`repos_list.txt`](./repos_list.txt)
 
-- If overwriting, place the updated content after `read -r -d '' WORKFLOW_CONTENT << 'EOF'`
+- If overwriting, place the updated content after `cat << EOF`
 
 ### pull_or_clone.py
 
