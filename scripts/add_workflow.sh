@@ -1,14 +1,14 @@
 #!/bin/bash
-# description of this PR, remember to modify accordingly
-PR_DESCRIPTION="ci: use a unified reusable workflow" 
 
-REPOS=$(cat repos_list.txt)
-
-# GitHub Personal Access Token
+# Load Personal Access Token
 source .env
 
-# Initialize timezone hour counter
+PR_DESCRIPTION="ci: use a unified reusable workflow" 
+REPOS=$(cat repos_list.txt)
+
+# Initialize
 TIMEZONE_HOUR=0
+PR_MARKER="[automated-generated-pr]"
 
 # Function to generate full workflow content with specific hour
 generate_full_workflow_content() {
