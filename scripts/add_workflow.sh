@@ -3,10 +3,9 @@
 # Load Personal Access Token
 source .env
 
+# Initialize
 PR_DESCRIPTION="ci: use a unified reusable workflow" 
 REPOS=$(cat repos_list.txt)
-
-# Initialize
 TIMEZONE_HOUR=0
 PR_MARKER="[automated-generated-pr]"
 
