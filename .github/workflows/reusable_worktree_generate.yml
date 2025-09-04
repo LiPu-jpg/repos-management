@@ -40,7 +40,7 @@ jobs:
           python3 /tmp/generate_worktree_info.py
 
       - name: Trigger workflow in hoa-moe (optional)
-        if: inputs.trigger_page_build == 'true'
+        if: inputs.trigger_page_build
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
