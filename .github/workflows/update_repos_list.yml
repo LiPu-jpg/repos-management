@@ -3,12 +3,7 @@ name: Update Repositories List
 on:
   push:
     branches: [ "main" ]
-    tags:
-      - "v*"
-
-  pull_request:
-    branches: [ "main" ]
-
+  workflow_dispatch:
   schedule:
     - cron: "0 1 * * *" # Update everyday
 
