@@ -7,11 +7,12 @@ on:
   schedule:
     - cron: "0 1 * * *" # Update everyday
 
+permissions:
+  contents: write
 
 jobs:
   update-repos-list:
     runs-on: ubuntu-latest
-    permissions: write-all
 
     steps:
       - name: Checkout repository
@@ -35,7 +36,7 @@ jobs:
       - name: Update Repositories List
         run: uv run scripts/fetch_repos.py
         env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ORG_NAME: HITSZ-OpenAuto
 
       - name: Commit and Push Changes
