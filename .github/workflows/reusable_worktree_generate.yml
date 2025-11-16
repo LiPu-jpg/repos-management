@@ -39,6 +39,16 @@ jobs:
           chmod +x /tmp/generate_worktree_info.py
           python3 /tmp/generate_worktree_info.py
 
+      - name: Trigger Update Repositories List workflow
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            https://api.github.com/repos/HITSZ-OpenAuto/repos-management/actions/workflows/update_repos_list.yml/dispatches \
+            -d '{"ref":"main"}'
+
       - name: Trigger workflow in hoa-moe (optional)
         if: inputs.trigger_page_build
         env:
