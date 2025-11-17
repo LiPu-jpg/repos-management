@@ -6,12 +6,10 @@ source .env
 # Initialize
 PR_DESCRIPTION="ci: use a unified reusable workflow" 
 REPOS=$(cat repos_list.txt)
-TIMEZONE_HOUR=0
 PR_MARKER="[automated-generated-pr]"
 
 # Function to generate full workflow content with specific hour
 generate_full_workflow_content() {
-  local hour=$1
   cat << EOF
 name: Call Worktree Update
 
@@ -19,8 +17,6 @@ on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
-  schedule:
-    - cron: '0 ${hour} * * *'
 
 jobs:
   call_reusable_workflow:
@@ -39,15 +35,12 @@ jobs:
 EOF
 }
 
-# Initialize timezone hour counter
-TIMEZONE_HOUR=0
-
 # Loop through the repositories and add the workflow file via PR
 for REPO in $REPOS; do
-  echo "Processing $REPO (timezone hour: $TIMEZONE_HOUR)"
+  echo "Processing $REPO"
   
   # Generate workflow content with current timezone hour
-  WORKFLOW_CONTENT=$(generate_full_workflow_content $TIMEZONE_HOUR)
+  WORKFLOW_CONTENT=$(generate_full_workflow_content)
   
   BRANCH_NAME="update-worktree-workflow"
   # Get the latest commit SHA of the main branch
@@ -134,9 +127,4 @@ for REPO in $REPOS; do
     echo "Failed to create PR for $REPO (might already exist): $PR_RESULT"
   fi
   
-  # Increment timezone hour and reset after 23
-  TIMEZONE_HOUR=$((TIMEZONE_HOUR + 1))
-  if [ $TIMEZONE_HOUR -gt 23 ]; then
-    TIMEZONE_HOUR=0
-  fi
 done
