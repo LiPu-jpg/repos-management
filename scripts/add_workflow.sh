@@ -8,40 +8,21 @@ PR_DESCRIPTION="ci: use a unified reusable workflow"
 REPOS=$(cat repos_list.txt)
 PR_MARKER="[automated-generated-pr]"
 
-# Function to generate full workflow content with specific hour
-generate_full_workflow_content() {
-  cat << EOF
-name: Call Worktree Update
+# Fetch workflow content from the online repository
+NEW_WORKFLOW_URL="https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/refs/heads/main/call_worktree_update.yml"
 
-on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch:
+echo "Fetching workflow content from $NEW_WORKFLOW_URL"
+WORKFLOW_CONTENT=$(curl -sSLf "$NEW_WORKFLOW_URL")
 
-jobs:
-  call_reusable_workflow:
-    uses: HITSZ-OpenAuto/repos-management/.github/workflows/reusable_worktree_generate.yml@main
-    permissions:
-      contents: write
-      pull-requests: write
-
-    with:
-      # trigger_page_build == true only when pushing to main branch
-      trigger_page_build: \${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-
-    secrets:
-      PAT: \${{ secrets.PERSONAL_ACCESS_TOKEN }}
-
-EOF
-}
+if [ $? -ne 0 ] || [ -z "$WORKFLOW_CONTENT" ]; then
+  echo "Error: Failed to fetch workflow content from $NEW_WORKFLOW_URL"
+  exit 1
+fi
 
 # Loop through the repositories and add the workflow file via PR
 for REPO in $REPOS; do
   echo "Processing $REPO"
-  
-  # Generate workflow content with current timezone hour
-  WORKFLOW_CONTENT=$(generate_full_workflow_content)
-  
+    
   BRANCH_NAME="update-worktree-workflow"
   # Get the latest commit SHA of the main branch
   MAIN_SHA=$(gh api -H "Authorization: token $PERSONAL_ACCESS_TOKEN" "/repos/HITSZ-OpenAuto/$REPO/git/ref/heads/main" -q '.object.sha')
