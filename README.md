@@ -50,9 +50,7 @@ Batch approve the latest PRs for all repositories listed in [`repos_list.txt`](.
 
 ### add_workflow.sh
 
-Batch add/overwrite workflow files for all repositories listed in [`repos_list.txt`](./repos_list.txt)
-
-- If overwriting, place the updated content after `cat << EOF`
+Batch add/overwrite workflow files for all repositories listed in [`repos_list.txt`](./repos_list.txt). The workflow content is sourced from the root-level `call_worktree_update.yml` in the online repository `HITSZ-OpenAuto/repos-management`
 
 ### pull_or_clone.py
 

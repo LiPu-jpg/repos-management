@@ -48,9 +48,7 @@
 
 ### add_workflow.sh
 
-批量为 [`repos_list.txt`](./repos_list.txt) 下所有仓库添加/覆写 workflow 文件
-
-- 若需覆写，请将更新内容写在 `cat << EOF` 后面
+批量为 [`repos_list.txt`](./repos_list.txt) 下所有仓库添加/覆写 workflow 文件。文件内容来自线上仓库 `HITSZ-OpenAuto/repos-management` 根目录下的 `call_worktree_update.yml` 文件
 
 ### pull_or_clone.py
 
