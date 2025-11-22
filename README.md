@@ -20,14 +20,26 @@ The scripts in this repository are designed to manage repositories within an org
 
 ## Create Personal Access Token
 
-1. Create a Token in GitHub's web interface at `Settings` → `Developer settings` → `Personal access tokens`
+1. Log in to GitHub CLI
 
-2. Required Permissions: At least `repo` and `workflow`
+    ```bash
+    gh auth login
+    ```
 
-3. Save to `.env` file:
+2. Create a Token in GitHub: <https://github.com/settings/tokens/new>
+
+3. Required Permissions: At least `repo` and `workflow`
+
+4. Export an environment variable on macOS or Linux systems
 
    ```bash
-   PERSONAL_ACCESS_TOKEN=<your_token_here>
+   export PERSONAL_ACCESS_TOKEN=<your_token_here>
+   ```
+
+5. To run a shell script, use the following command format:
+
+   ```bash
+   bash ./scripts/<script_name>.sh
    ```
 
 ## Script Documentation

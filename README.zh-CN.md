@@ -18,14 +18,26 @@
 
 ## 创建 Personal Access Token
 
-1. 在 GitHub 网页版的 `Settings` → `Developer settings` → `Personal access tokens` 中创建 Token
+1. 登录 GitHub CLI
 
-2. 权限要求：至少包含 `repo` 和 `workflow`
+    ```bash
+    gh auth login
+    ```
 
-3. 保存至 `.env` 文件：
+2. 在 GitHub 中创建 Token：<https://github.com/settings/tokens/new>
+
+3. 权限要求：至少包含 `repo` 和 `workflow`
+
+4. 在 macOS 或 Linux 系统上导出环境变量
 
    ```bash
-   PERSONAL_ACCESS_TOKEN=<your_token_here>
+   export PERSONAL_ACCESS_TOKEN=<your_token_here>
+   ```
+
+5. 要运行 shell 脚本，请使用以下命令格式：
+
+   ```bash
+   bash ./scripts/<script_name>.sh
    ```
 
 ## 脚本说明
