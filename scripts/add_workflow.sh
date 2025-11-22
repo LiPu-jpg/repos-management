@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# Load Personal Access Token
-source .env
-
 # Initialize
-PR_DESCRIPTION="ci: use a unified reusable workflow" 
+PR_DESCRIPTION="This PR disables the scheduled trigger in the workflow to prevent GitHub from freezing the workflow runs after 60 days of inactivity."
 REPOS=$(cat repos_list.txt)
 PR_MARKER="[automated-generated-pr]"
 
@@ -23,7 +20,7 @@ fi
 for REPO in $REPOS; do
   echo "Processing $REPO"
     
-  BRANCH_NAME="update-worktree-workflow"
+  BRANCH_NAME="fix/disable-schedule-worktree"
   # Get the latest commit SHA of the main branch
   MAIN_SHA=$(gh api -H "Authorization: token $PERSONAL_ACCESS_TOKEN" "/repos/HITSZ-OpenAuto/$REPO/git/ref/heads/main" -q '.object.sha')
 
@@ -99,7 +96,7 @@ for REPO in $REPOS; do
   fi
 
   # Create a pull request
-  PR_RESULT=$(gh pr create -R "HITSZ-OpenAuto/$REPO" -B main -H "$BRANCH_NAME" -t "${PR_MARKER} ci: updated worktree.json generation" -b "$PR_DESCRIPTION" 2>&1)
+  PR_RESULT=$(gh pr create -R "HITSZ-OpenAuto/$REPO" -B main -H "$BRANCH_NAME" -t "${PR_MARKER} ci: disable scheduled trigger" -b "$PR_DESCRIPTION" 2>&1)
   PR_EXIT_CODE=$?
   
   if [ $PR_EXIT_CODE -eq 0 ]; then
