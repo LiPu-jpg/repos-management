@@ -4,6 +4,7 @@
 PR_DESCRIPTION="This PR disables the scheduled trigger in the workflow to prevent GitHub from freezing the workflow runs after 60 days of inactivity."
 REPOS=$(cat repos_list.txt)
 PR_MARKER="[automated-generated-pr]"
+PR_TITLE="${PR_MARKER} ci: disable scheduled trigger"
 
 # Fetch workflow content from the online repository
 NEW_WORKFLOW_URL="https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/refs/heads/main/call_worktree_update.yml"
@@ -72,7 +73,7 @@ for REPO in $REPOS; do
       -H "Authorization: token $PERSONAL_ACCESS_TOKEN" \
       -H "Accept: application/vnd.github.v3+json" \
       "/repos/HITSZ-OpenAuto/$REPO/contents/.github/workflows/trigger-workflow.yml" \
-      -f message="$PR_DESCRIPTION" \
+      -f message="$PR_TITLE" \
       -f content="$WORKFLOW_CONTENT_BASE64" \
       -f branch="$BRANCH_NAME" \
       -f sha="$FILE_SHA" 2>&1)
@@ -82,7 +83,7 @@ for REPO in $REPOS; do
       -H "Authorization: token $PERSONAL_ACCESS_TOKEN" \
       -H "Accept: application/vnd.github.v3+json" \
       "/repos/HITSZ-OpenAuto/$REPO/contents/.github/workflows/trigger-workflow.yml" \
-      -f message="$PR_DESCRIPTION" \
+      -f message="$PR_TITLE" \
       -f content="$WORKFLOW_CONTENT_BASE64" \
       -f branch="$BRANCH_NAME" 2>&1)
   fi
@@ -96,7 +97,7 @@ for REPO in $REPOS; do
   fi
 
   # Create a pull request
-  PR_RESULT=$(gh pr create -R "HITSZ-OpenAuto/$REPO" -B main -H "$BRANCH_NAME" -t "${PR_MARKER} ci: disable scheduled trigger" -b "$PR_DESCRIPTION" 2>&1)
+  PR_RESULT=$(gh pr create -R "HITSZ-OpenAuto/$REPO" -B main -H "$BRANCH_NAME" -t "$PR_TITLE" -b "$PR_DESCRIPTION" 2>&1)
   PR_EXIT_CODE=$?
   
   if [ $PR_EXIT_CODE -eq 0 ]; then
