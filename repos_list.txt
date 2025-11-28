@@ -118,3 +118,4 @@ n8nAutoMetadata
 GEIP4004
 auto-metadata
 EE1018
+COMP2001
