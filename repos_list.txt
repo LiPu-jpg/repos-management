@@ -117,3 +117,4 @@ EE304X
 n8nAutoMetadata
 GEIP4004
 auto-metadata
+EE1018
