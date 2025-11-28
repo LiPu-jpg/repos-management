@@ -116,3 +116,4 @@ COMP3043
 EE304X
 n8nAutoMetadata
 GEIP4004
+auto-metadata
