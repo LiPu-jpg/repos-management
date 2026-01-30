@@ -1,0 +1,601 @@
+# 成绩构成汇总表
+# 自动生成，请勿手动修改
+
+[grades.AUTO1001]
+course_name = "自动化认知与实践"
+[grades.AUTO1001.default.default]
+grade = "作业 10% + 课堂实验 30%+ 机器人考核 30% + 期末考试 30%"
+
+[grades.AUTO2001]
+course_name = "自动化专业导论"
+[grades.AUTO2001.default.default]
+grade = "作业 40% + 期末考试 60%"
+
+[grades.AUTO2003B]
+course_name = "创新训练课 B"
+[grades.AUTO2003B.default.default]
+grade = "大作业 100%"
+
+[grades.AUTO2005]
+course_name = "信号分析与处理"
+[grades.AUTO2005.default.default]
+grade = "作业 10% + 实验 25% + 期末考试 65%"
+
+[grades.AUTO2006]
+course_name = "控制理论中的代数基础"
+[grades.AUTO2006.default.default]
+grade = "平时成绩 10% + 作业 20% + 期末考试 70%"
+
+[grades.AUTO3001A]
+course_name = "自动控制理论 A"
+[grades.AUTO3001A.default.default]
+grade = "作业 13% + 课堂表现 5% + 上机实验 4% + 硬件实验 8% + 期末考试 70%"
+
+[grades.AUTO3001B]
+course_name = "自动控制理论B"
+[grades.AUTO3001B.default.default]
+grade = "作业 12% + 出勤 5% + 上机实验 5% + 实验 8% + 期末考试 70% "
+
+[grades.AUTO3002A]
+course_name = "自动控制实践 A"
+[grades.AUTO3002A.default.default]
+grade = "作业 10% + 实验 25% + 期末考试 65%"
+
+[grades.AUTO3002B]
+course_name = "自动控制实践 B"
+[grades.AUTO3002B."2021".default]
+grade = "作业 10% + 实验 40% + 期末考试 50%"
+[grades.AUTO3002B."2023".default]
+grade = "作业 10% + 实验 30% + 期末考试 60%"
+[grades.AUTO3002B.default.default]
+grade = "作业 10% + 实验 40% + 期末考试 50%"
+
+[grades.AUTO3003]
+course_name = "数字图像处理"
+[grades.AUTO3003.default.default]
+grade = "作业 10% + 课程设计 25%+ 实验 20% + 期末考试 45%"
+
+[grades.AUTO3004]
+course_name = "系统建模与仿真"
+[grades.AUTO3004.default.default]
+grade = "作业 20% + 实验 20% + 期末考试 60%"
+
+[grades.AUTO3005]
+course_name = "机器人学导论"
+[grades.AUTO3005.default.default]
+grade = "作业 15% + 实验 15% + 课程设计 20% + 期末考试 50%"
+
+[grades.AUTO3006]
+course_name = "机器视觉"
+[grades.AUTO3006.default.default]
+grade = "考勤 5% + 作业 10% + 实验 20% + 课设 25% + 期末考试 40%"
+
+[grades.AUTO3007]
+course_name = "过程控制系统"
+[grades.AUTO3007."2020".default]
+grade = "作业 20% + 实验 40% + 期末考试 40%"
+[grades.AUTO3007."2021".default]
+grade = "作业 20% + 实验 30% + 期末考试 50%"
+[grades.AUTO3007."2022".default]
+grade = "作业 20% + 实验 30% + 期末考试 50%"
+[grades.AUTO3007.default.default]
+grade = "作业 20% + 实验 30% + 期末考试 50%"
+
+[grades.AUTO3011]
+course_name = "运动控制系统"
+[grades.AUTO3011.default.default]
+grade = "作业+实验 50% + 期末考试 50%"
+
+[grades.AUTO3012]
+course_name = "移动机器人导论"
+[grades.AUTO3012.default.default]
+grade = "作业 20% + 实验 40% + 实验报告 40%"
+
+[grades.AUTO3016]
+course_name = "自动控制实践 A 实验"
+[grades.AUTO3016.default.default]
+grade = "实验报告 90% (10% × 9) + 答辩 10%"
+
+[grades.AUTO3019]
+course_name = "机器学习概论"
+[grades.AUTO3019.default.default]
+grade = "平时 10% + 作业 30% + 报告 20% + 期末大作业 40%"
+
+[grades.AUTO3022]
+course_name = "自动化领域专家系列讲座"
+[grades.AUTO3022.default.default]
+grade = "报告 100%"
+
+[grades.AUTO3024]
+course_name = "嵌入式系统"
+[grades.AUTO3024.default.default]
+grade = "作业 10% + 实验 50% + 期末考试 40%"
+
+[grades.AUTO3028]
+course_name = "数学规划与数值优化"
+[grades.AUTO3028."2021".default]
+grade = "作业 30% + 期末考试 70%"
+[grades.AUTO3028."2023".default]
+grade = "作业 40% + 期末考试 60%"
+
+[grades.AUTO3099]
+course_name = "毕业设计"
+[grades.AUTO3099."21级".default]
+grade = "开题检查 2% + 中期检查 3% + 结题检查 5% + 指导老师评分 27% + 评阅老师评分 18% + 答辩小组评分 45%"
+
+[grades.AUTO5001]
+course_name = "线性系统理论"
+[grades.AUTO5001.default.default]
+grade = "作业 40% + 期末考试 60%"
+
+[grades.AUTO5002]
+course_name = "系统辨识"
+[grades.AUTO5002.default.default]
+grade = "作业 40% + 期末考试 60%"
+
+[grades.AUTO5005]
+course_name = "非线性与自适应控制"
+[grades.AUTO5005.default.default]
+grade = "平时成绩 30% + 期末考试 70%"
+
+[grades.AUTO5013]
+course_name = "最优估计"
+[grades.AUTO5013.default.default]
+grade = "作业 10% + 出勤 10% + 项目 40% + 期末考试 40%"
+
+[grades.AUTO5023]
+course_name = "凸优化与最优控制"
+[grades.AUTO5023."2024".default]
+grade = "作业（含凸优化习题以及最优控制大作业） 30% + 期末考试 70%"
+[grades.AUTO5023.default.default]
+grade = "随堂测验 10% + 作业 20% + 期末考试 70%"
+
+[grades.AUTO5024]
+course_name = "模式识别"
+[grades.AUTO5024.default.default]
+grade = "上机实验 40% + 期末考试 60%"
+
+[grades.CHEM1012]
+course_name = "大学化学III"
+[grades.CHEM1012.default.default]
+grade = "平时 60% + 实验 40%"
+
+[grades.COMP1011]
+course_name = "程序设计与思维实践"
+[grades.COMP1011.default.default]
+grade = "作业 10% + 实验 30% + 期末考试 60%"
+
+[grades.COMP2001]
+course_name = "计算机专业导论"
+[grades.COMP2001.default.default]
+grade = "作业 30% + 期末考试 70%"
+
+[grades.COMP2008]
+course_name = "计算机组成原理"
+[grades.COMP2008.default.default]
+grade = "作业 10% + 实验 20% + 期末考试 70%"
+
+[grades.COMP2010]
+course_name = "近世代数"
+[grades.COMP2010.default.default]
+grade = "作业 40% + 期末考试 60%"
+
+[grades.COMP2012]
+course_name = "计算机设计与实践"
+[grades.COMP2012.default.default]
+grade = "实验 100%"
+
+[grades.COMP2014]
+course_name = "C++语言程序设计"
+[grades.COMP2014.default.default]
+grade = "作业 20% + 实验 40% + 期末考试 40%"
+
+[grades.COMP2029]
+course_name = "面向领域的计算机系统设计与开发实践"
+[grades.COMP2029.default.default]
+grade = "过程检查 30% + 结题验收 70%"
+
+[grades.COMP2030]
+course_name = "离散数学"
+[grades.COMP2030.default.default]
+grade = "作业 40% + 期末考试 60%"
+
+[grades.COMP2050]
+course_name = "数据结构与算法"
+[grades.COMP2050."2021".default]
+grade = "作业 10% + 实验 20% + 作业 70%"
+
+[grades.COMP2051]
+course_name = "数字逻辑设计"
+[grades.COMP2051.default.default]
+grade = "作业 20% + 实验 30% + 期末考试 50%"
+
+[grades.COMP2052]
+course_name = "数据结构与算法"
+[grades.COMP2052.default.default]
+grade = "作业 10% + 实验 20% + 期末考试 70%"
+
+[grades.COMP3001]
+course_name = "操作系统"
+[grades.COMP3001.default.default]
+grade = "平时分 10% + 实验 30% + 期末考试 60%"
+
+[grades.COMP3002]
+course_name = "软件工程"
+[grades.COMP3002.default.default]
+grade = "作业 30% + 期末考试 70%"
+
+[grades.COMP3004]
+course_name = "形式语言与自动机"
+[grades.COMP3004.default.default]
+grade = "作业 30% + 期末考试 70%"
+
+[grades.COMP3005]
+course_name = "人工智能"
+[grades.COMP3005.default.default]
+grade = "作业 30% + 实验 30% + 期末考试 40%"
+
+[grades.COMP3006]
+course_name = "机器学习"
+[grades.COMP3006.default.default]
+grade = "作业 10% + Project 50% + 期末考试 40%"
+
+[grades.COMP3007]
+course_name = "模式识别"
+[grades.COMP3007.default.default]
+grade = "作业 10% + 期末考试 90%"
+
+[grades.COMP3009]
+course_name = "大数据导论"
+[grades.COMP3009.default.default]
+grade = "大作业 40% + 小作业 30% + 实验 30%"
+
+[grades.COMP3010]
+course_name = "数据库系统"
+[grades.COMP3010.default.default]
+grade = "作业 10% + 实验 30% + 期末考试 60%"
+
+[grades.COMP3011]
+course_name = "计算机体系结构"
+[grades.COMP3011.default.default]
+grade = "作业 20% + 实验 40% + 期末考试 40%"
+
+[grades.COMP3013]
+course_name = "编译原理"
+[grades.COMP3013.default.default]
+grade = "作业 10% + 实验 20% + 期末考试 70%"
+
+[grades.COMP3017]
+course_name = "服务计算"
+[grades.COMP3017.default.default]
+grade = "Participation 5% + Hot topic study journal 15% + Exercises 20% + Final Examination 60%"
+
+[grades.COMP3018]
+course_name = "图像处理"
+[grades.COMP3018.default.default]
+grade = "作业 30% + 期末考试 70%"
+
+[grades.COMP3019]
+course_name = "生物信息学"
+[grades.COMP3019.default.default]
+grade = "作业 40% + 期末考试 60%"
+
+[grades.COMP3021]
+course_name = "自然语言处理"
+[grades.COMP3021.default.default]
+grade = "比赛 60% + 期末考试 40%"
+
+[grades.COMP3028]
+course_name = "软件体系结构"
+[grades.COMP3028.default.default]
+grade = "Participation 10% + Practical exercises 30% + Final examination 60%"
+
+[grades.COMP3029]
+course_name = "计算机视觉"
+[grades.COMP3029.default.default]
+grade = "考勤 24% + 作业 40% + Final Project 36%"
+
+[grades.COMP3030]
+course_name = "信息检索"
+[grades.COMP3030.default.default]
+grade = "随堂练习 10% + 作业 40% + 大项目 50%"
+
+[grades.COMP3039]
+course_name = "嵌入式计算"
+[grades.COMP3039.default.default]
+grade = "作业 40% + 期末考试 60%"
+
+[grades.COMP3040]
+course_name = "密码学基础"
+[grades.COMP3040.default.default]
+grade = "作业 20% + 实验 30% + 期末考试 50%"
+
+[grades.COMP3043]
+course_name = "深度学习体系结构"
+[grades.COMP3043.default.default]
+grade = "实验 40% + 课堂小测 40% + 期末报告 20%"
+
+[grades.COMP3044]
+course_name = "科研写作交流技巧"
+[grades.COMP3044.default.default]
+grade = "课堂参与 20% + 课堂展示 40% + 论文 40%"
+
+[grades.COMP3052]
+course_name = "计算机系统"
+[grades.COMP3052.default.default]
+grade = "作业 20% + 实验 20% + 期末考试 60%"
+
+[grades.COMP3053]
+course_name = "汇编语言与接口技术"
+[grades.COMP3053.default.default]
+grade = "作业 20% + 实验 20% + 期末考试 60%"
+
+[grades.COMP3054]
+course_name = "网络与系统安全"
+[grades.COMP3054.default.default]
+grade = "作业 10% + 实验 30% + 期末考试 60%"
+
+[grades.COMP3059]
+course_name = "软件构造"
+[grades.COMP3059.default.default]
+grade = "作业 10% + 上机实验 40% + 期末考试 50%"
+
+[grades.COMP3060]
+course_name = "软件构造实践"
+[grades.COMP3060.default.default]
+grade = "开题报告 10% + 中期检查 20% + 结题报告 20% + 软件作品 50%"
+
+[grades.ECON2005F]
+course_name = "经济学原理（跨专业选修）"
+[grades.ECON2005F.default.default]
+grade = "考勤 20% + 生活中的经济学 20% + 期中考试 30% + 期末考试 30%"
+
+[grades.EE1007]
+course_name = "模拟电子技术基础"
+[grades.EE1007."21级自动化".default]
+grade = "作业 30% + 期末考试 70%"
+[grades.EE1007."21级电气/通信、22级自动化".default]
+grade = "作业 20% + 期末考试 80%"
+
+[grades.EE1008]
+course_name = "模拟电子技术实验"
+[grades.EE1008.default.default]
+grade = "MOOC预习题 + 按时完成实验（不按时完成，则适当扣分）+ 报告分数（无考试）"
+
+[grades.EE1009]
+course_name = "数字电子技术基础"
+[grades.EE1009.default.default]
+grade = "平时成绩 20% + 期末考试 80% (上课会有小测，以考勤为主，到场即有60分)"
+
+[grades.EE1010]
+course_name = "数字电子技术实验"
+[grades.EE1010.default.default]
+grade = "预习题 + 按时完成实验（不按时完成，则适当扣分）+ 报告分数"
+
+[grades.EE1011A]
+course_name = "电路IA"
+[grades.EE1011A."WangCan".default]
+grade = "作业 35% + 期末考试 65%"
+[grades.EE1011A."WangYi".default]
+grade = "作业 20% + 期末考试 80%"
+
+[grades.EE1011B]
+course_name = "电路IB"
+[grades.EE1011B.default.default]
+grade = "作业 20% + 期末考试 80%"
+
+[grades.EE1012A]
+course_name = "电路实验IA"
+[grades.EE1012A.default.default]
+grade = "实验报告 100%"
+
+[grades.EE1012B]
+course_name = "电路实验IB"
+[grades.EE1012B.default.default]
+grade = "出勤 + 实验报告 100%"
+
+[grades.EE1013]
+course_name = "电路与电子学"
+[grades.EE1013.default.default]
+grade = "作业 20% + 期末考试 80%"
+
+[grades.EE1014]
+course_name = "电路与电子技术实验"
+[grades.EE1014.default.default]
+grade = "实验报告 100%"
+
+[grades.EE1018]
+course_name = "电路与电子学I"
+[grades.EE1018.default.default]
+grade = "作业 20% + 期末考试 80%"
+
+[grades.EE2003]
+course_name = "电磁场"
+[grades.EE2003.default.default]
+grade = "作业 14% + MOOC 12% + 实验 8% + 期末考试 66%"
+
+[grades.EE2004]
+course_name = "高等电路与电子分析"
+[grades.EE2004."2024".default]
+grade = "作业 20% + 期末考试 80%"
+
+[grades.EE3002]
+course_name = "电力电子技术"
+[grades.EE3002.default.default]
+grade = "实验 20% + 期中考试 20% + 期末考试 60%"
+
+[grades.EE3015]
+course_name = "电力系统分析"
+
+[grades.EE304X]
+course_name = "专业综合实践"
+[grades.EE304X.default.default]
+grade = "实物验收 30% + 设计报告 70%"
+
+[grades.EMEC1002]
+course_name = "理论力学II"
+[grades.EMEC1002."2024".default]
+grade = "平时考勤 10% + 作业&小测 20% + 期中考试 20% + 期末考试 50%"
+
+[grades.ENGG1002]
+course_name = "工程训练（金工实习）"
+[grades.ENGG1002.default.default]
+grade = "工程认知（课堂作业） 15% + 工程素养（出勤） 15% + 工程技能（训练内容） 30% + 工程综合（项目制作） 30% + 工程创新（项目创新） 10%"
+
+[grades.ENGG1003]
+course_name = "工程训练（电子工艺实习）"
+[grades.ENGG1003."23级".default]
+grade = "元器件识别 7% + 电子封装 7% + 电子可靠性 5% + 硬件设计 11% + PCB设计 11% + 软件设计 18% + 焊接调试 11% + 项目制作 30%"
+[grades.ENGG1003.default.default]
+grade = "实验 100% (具体细分参考年份配置)"
+
+[grades.GEIP1011]
+course_name = "马克思主义基本原理"
+[grades.GEIP1011."2022".default]
+grade = "课堂表现 10% + 讨论与展示 20% + 作业 20% + 期末考试 50%"
+[grades.GEIP1011."2023".default]
+grade = "课堂表现 4% + 小测 16% + 讨论与展示 10% + 期末考试 70%"
+
+[grades.GEIP1015]
+course_name = "思想道德与法治"
+[grades.GEIP1015.default.default]
+grade = "平时 50% + 期末考试 50%"
+
+[grades.GEIP1016]
+course_name = "中国近现代史纲要"
+[grades.GEIP1016.default.default]
+grade = "课堂表现 10% + 讨论与展示 20% + 论文 20% + 期末考试 50%"
+
+[grades.GEIP1017]
+course_name = "习近平新时代中国特色社会主义思想概论"
+[grades.GEIP1017."2023".default]
+grade = "平时和课堂展示 20% + 期中论文 30% + 期末论文 50%"
+[grades.GEIP1017."2024".default]
+grade = "平时和课堂展示 20% + 期中论文 20% + 期末考试 60%"
+[grades.GEIP1017."2025".default]
+grade = "平时和课堂展示 24% + 期中论文 16% + 期末考试 60%"
+[grades.GEIP1017.default.default]
+grade = "请参考具体年份设置（23级为考查课，24级及以后为考试课）"
+
+[grades.GEIP1018]
+course_name = "毛泽东思想和中国特色社会主义理论体系概论"
+[grades.GEIP1018."2024".default]
+grade = "课程论文 10% + 小组汇报 20% + 期末考试 70%"
+
+[grades.GEIP4004]
+course_name = "新时代中国特色社会主义理论与实践"
+[grades.GEIP4004.default.default]
+grade = "出勤 10% + 论文 20% + 讨论与展示 20% + 期末考试 50%"
+
+[grades.LANG100X]
+course_name = "大学英语"
+[grades.LANG100X."大一".default]
+grade = "作业 40% + 期末考试 60%"
+[grades.LANG100X."大二".default]
+grade = "作业 50% + 期末考试 50%"
+[grades.LANG100X.default.default]
+grade = "作业 40% + 期末考试 60%"
+
+[grades.MATH1002]
+course_name = "代数与几何"
+[grades.MATH1002.default.default]
+grade = "作业 20% + 期中考试 30% + 期末考试 50%"
+
+[grades.MATH1004]
+course_name = "概率论与数理统计"
+[grades.MATH1004.default.default]
+grade = "作业 20% + 论文 10% + 期末考试 70%"
+
+[grades.MATH1005]
+course_name = "复变函数与积分变换"
+[grades.MATH1005.default.default]
+grade = "作业 20% + 期末考试 80%"
+
+[grades.MATH1015A]
+course_name = "微积分A"
+[grades.MATH1015A.default.default]
+grade = "作业 20% + 期中考试 30% + 期末考试 50%"
+
+[grades.MATH1015B]
+course_name = "微积分B"
+[grades.MATH1015B.default.default]
+grade = "作业 20% + 期中考试 30% + 期末考试 50%"
+
+[grades.MATH4001]
+course_name = "矩阵分析"
+[grades.MATH4001.default.default]
+grade = "作业 30% + 期末考试 70%"
+
+[grades.MATH4002]
+course_name = "优化算法"
+[grades.MATH4002.default.default]
+grade = "作业 30% + 期末考试 70%"
+
+[grades.MATH4004]
+course_name = "数值分析"
+[grades.MATH4004.default.default]
+grade = "出勤 10% + 课堂测验及作业 20% + 期末考试 70%"
+
+[grades.MECH2010]
+course_name = "机械设计基础"
+[grades.MECH2010.default.default]
+grade = "平时成绩 30% + 作业 20% + 期末考试 50%"
+
+[grades.MECH2019]
+course_name = "设计与制造 A"
+[grades.MECH2019.default.default]
+grade = "平时作业 20% + 大作业 30% + 期末考试 50%"
+
+[grades.MECH2020]
+course_name = "设计与制造B"
+[grades.MECH2020.default.default]
+grade = "小作业 10% + 大作业 20% + 期末考试 70%"
+
+[grades.MECH2022]
+course_name = "固体力学"
+[grades.MECH2022.default.default]
+grade = "作业 15% + 实验 15% + 期末考试 70%"
+
+[grades.MECH3005]
+course_name = "机电系统控制基础"
+[grades.MECH3005.default.default]
+grade = "平时作业 20% + 实验 20% + 期末考试 60%"
+
+[grades.MECH3041]
+course_name = "设计与制造 C"
+[grades.MECH3041.default.default]
+grade = "大作业 20% + 实验 30% + 期末考试 50%"
+
+[grades.MECH3060]
+course_name = "机器人学基础"
+[grades.MECH3060.default.default]
+grade = "作业 25% + 实验 15% + 期末考试 60%"
+
+[grades.PHYS1001]
+course_name = "大学物理"
+[grades.PHYS1001."2023".default]
+grade = "作业 30% + 期末考试 70%"
+[grades.PHYS1001."2024".default]
+grade = "作业 30% + 期中考试 20% + 期末考试 50%"
+
+[grades.PHYS1002]
+course_name = "大学物理实验"
+[grades.PHYS1002.default.default]
+grade = "每次实验得分的加权和 100%"
+
+[grades.SEIN1040]
+course_name = "中国科技史话"
+[grades.SEIN1040.default.default]
+grade = "平时 20% + 实验 40% + 课堂展示 40%"
+
+[grades.WOCD1008]
+course_name = "日语I"
+[grades.WOCD1008.default.default]
+grade = "平时成绩 100%"
+
+[grades.WRIT0001]
+course_name = "写作与沟通"
+[grades.WRIT0001."寸熙".default]
+grade = "平时 15% + 短文 30% + 长文 40% + 口头报告 15%"
+[grades.WRIT0001.default.default]
+grade = "各小班成绩构成可能不同，通常包含平时表现、短文、长文和口头汇报。"
