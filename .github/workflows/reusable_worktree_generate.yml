@@ -8,21 +8,6 @@ on:
         required: false
         default: false
         type: boolean
-      toml_path:
-        description: Path to readme TOML file (autogen README when exists)
-        required: false
-        default: readme.toml
-        type: string
-      readme_path:
-        description: Path to README.md (autogen output)
-        required: false
-        default: README.md
-        type: string
-      taplo_args:
-        description: taplo fmt args (without leading 'fmt')
-        required: false
-        default: ""
-        type: string
     secrets:
       PAT:
         description: 'Personal Access Token'
@@ -53,8 +38,8 @@ jobs:
         id: rdme
         run: |
           set -euo pipefail
-          toml="${{ inputs.toml_path }}"
-          readme="${{ inputs.readme_path }}"
+          toml="readme.toml"
+          readme="README.md"
 
           if [ -f "$toml" ]; then
             echo "toml_exists=true" >> "$GITHUB_OUTPUT"
@@ -92,7 +77,7 @@ jobs:
         continue-on-error: true
         run: |
           set -euo pipefail
-          taplo fmt "${{ inputs.toml_path }}" ${{ inputs.taplo_args }}
+          taplo fmt "readme.toml"
 
       - name: Generate README from TOML
         id: gen
@@ -103,13 +88,13 @@ jobs:
 
           gen_script="scripts/convert_toml_to_readme.py"
           if [ -f "$gen_script" ]; then
-            python3 "$gen_script" --input "${{ inputs.toml_path }}" --overwrite
+            python3 "$gen_script" --input "readme.toml" --overwrite
             exit 0
           fi
 
           curl -Ls -o /tmp/convert_toml_to_readme.py \
             https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/convert_toml_to_readme.py
-          python3 /tmp/convert_toml_to_readme.py --input "${{ inputs.toml_path }}" --overwrite
+          python3 /tmp/convert_toml_to_readme.py --input "readme.toml" --overwrite
 
       - name: Clear warning (success only)
         if: >-
@@ -122,13 +107,13 @@ jobs:
 
           warn_script="scripts/readme_warning.py"
           if [ -f "$warn_script" ]; then
-            python3 "$warn_script" --readme "${{ inputs.readme_path }}" --clear
+            python3 "$warn_script" --readme "README.md" --clear
             exit 0
           fi
 
           curl -Ls -o /tmp/readme_warning.py \
             https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/readme_warning.py
-          python3 /tmp/readme_warning.py --readme "${{ inputs.readme_path }}" --clear
+          python3 /tmp/readme_warning.py --readme "README.md" --clear
 
       - name: Add warning (failure)
         if: >-
@@ -138,17 +123,17 @@ jobs:
           (steps.fmt.outcome != 'success' || steps.gen.outcome != 'success')
         run: |
           set -euo pipefail
-          msg="TOML 自动化格式化/生成 README 失败：请检查 ${{ inputs.toml_path }}（并查看 Actions 日志）。"
+          msg="TOML 自动化格式化/生成 README 失败：请检查 readme.toml（并查看 Actions 日志）。"
 
           warn_script="scripts/readme_warning.py"
           if [ -f "$warn_script" ]; then
-            python3 "$warn_script" --readme "${{ inputs.readme_path }}" --set --message "$msg"
+            python3 "$warn_script" --readme "README.md" --set --message "$msg"
             exit 0
           fi
 
           curl -Ls -o /tmp/readme_warning.py \
             https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/readme_warning.py
-          python3 /tmp/readme_warning.py --readme "${{ inputs.readme_path }}" --set --message "$msg"
+          python3 /tmp/readme_warning.py --readme "README.md" --set --message "$msg"
 
       - name: Commit & push TOML/README changes (main only)
         if: >-
@@ -159,12 +144,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-          if [ -e "${{ inputs.toml_path }}" ]; then
-            git add "${{ inputs.toml_path }}"
-          fi
-          if [ -e "${{ inputs.readme_path }}" ]; then
-            git add "${{ inputs.readme_path }}"
-          fi
+          git add readme.toml README.md || true
 
           if git diff --staged --quiet; then
             echo "No TOML/README changes to commit."
