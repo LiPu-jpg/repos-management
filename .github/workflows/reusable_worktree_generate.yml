@@ -22,6 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor != 'github-actions[bot]'
 
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -37,7 +41,6 @@ jobs:
       - name: Detect TOML/README paths
         id: rdme
         run: |
-          set -euo pipefail
           toml="readme.toml"
           readme="README.md"
 
@@ -57,7 +60,6 @@ jobs:
         if: steps.rdme.outputs.toml_exists == 'true'
         continue-on-error: true
         run: |
-          set -euo pipefail
           ver="0.10.0"
           arch="$(uname -m)"
           case "$arch" in
@@ -76,7 +78,6 @@ jobs:
         if: steps.rdme.outputs.toml_exists == 'true'
         continue-on-error: true
         run: |
-          set -euo pipefail
           taplo fmt "readme.toml"
 
       - name: Generate README from TOML
@@ -84,8 +85,6 @@ jobs:
         if: steps.rdme.outputs.toml_exists == 'true'
         continue-on-error: true
         run: |
-          set -euo pipefail
-
           gen_script="scripts/convert_toml_to_readme.py"
           if [ -f "$gen_script" ]; then
             python3 "$gen_script" --input "readme.toml" --overwrite
@@ -103,8 +102,6 @@ jobs:
           steps.fmt.outcome == 'success' &&
           steps.gen.outcome == 'success'
         run: |
-          set -euo pipefail
-
           warn_script="scripts/readme_warning.py"
           if [ -f "$warn_script" ]; then
             python3 "$warn_script" --readme "README.md" --clear
@@ -122,7 +119,6 @@ jobs:
           github.ref == 'refs/heads/main' &&
           (steps.fmt.outcome != 'success' || steps.gen.outcome != 'success')
         run: |
-          set -euo pipefail
           msg="TOML 自动化格式化/生成 README 失败：请检查 readme.toml（并查看 Actions 日志）。"
 
           warn_script="scripts/readme_warning.py"
@@ -140,7 +136,6 @@ jobs:
           steps.rdme.outputs.toml_exists == 'true' &&
           github.ref == 'refs/heads/main'
         run: |
-          set -euo pipefail
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
