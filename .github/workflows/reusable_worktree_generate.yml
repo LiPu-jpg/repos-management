@@ -59,8 +59,11 @@ jobs:
         continue-on-error: true
         run: |
           curl -Ls -o /tmp/rdme_autogen.py \
-            https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/rdme_autogen.py
-          python3 /tmp/rdme_autogen.py --toml readme.toml --readme README.md
+            https://raw.githubusercontent.com/LiPu-jpg/repos-management/feat/toml-autogen-workflow/scripts/rdme_autogen.py
+          python3 /tmp/rdme_autogen.py \
+            --toml readme.toml \
+            --readme README.md \
+            --converter-url https://raw.githubusercontent.com/LiPu-jpg/repos-management/feat/toml-autogen-workflow/scripts/convert_toml_to_readme.py
 
       - name: Commit & push TOML/README changes (main only)
         if: >-
@@ -116,7 +119,7 @@ jobs:
         run: |
           # Download the script
           curl -o /tmp/generate_worktree_info.py \
-          https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/generate_worktree_info.py
+          https://raw.githubusercontent.com/LiPu-jpg/repos-management/feat/toml-autogen-workflow/scripts/generate_worktree_info.py
           
           # Make it executable and run it
           chmod +x /tmp/generate_worktree_info.py
