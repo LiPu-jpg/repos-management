@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  generate_worktree_info:
+  rdme_autogen:
     runs-on: ubuntu-latest
     if: github.actor != 'github-actions[bot]'
 
@@ -82,6 +82,35 @@ jobs:
           # Keep it simple: one rebase + one push.
           git pull --rebase origin main
           git push origin HEAD:main
+
+      - name: Fail CI if formatting/generation failed
+        if: >-
+          steps.rdme.outputs.toml_exists == 'true' &&
+          steps.rdme.outcome != 'success'
+        run: |
+          echo "RDME outcome: ${{ steps.rdme.outcome }}"
+          exit 1
+
+  worktree_info:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    needs: rdme_autogen
+
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       
       - name: Fetch and run generate_worktree_info.py script
         run: |
@@ -93,6 +122,16 @@ jobs:
           chmod +x /tmp/generate_worktree_info.py
           python3 /tmp/generate_worktree_info.py
 
+  trigger_update_repos_list:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    needs: worktree_info
+
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+
+    steps:
       - name: Trigger Update Repositories List workflow
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -103,8 +142,19 @@ jobs:
             https://api.github.com/repos/HITSZ-OpenAuto/repos-management/actions/workflows/update_repos_list.yml/dispatches \
             -d '{"ref":"main"}'
 
-      - name: Trigger workflow in hoa-moe (optional)
-        if: inputs.trigger_page_build
+  trigger_hoa_moe:
+    runs-on: ubuntu-latest
+    if: >-
+      github.actor != 'github-actions[bot]' &&
+      inputs.trigger_page_build
+    needs: trigger_update_repos_list
+
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+
+    steps:
+      - name: Trigger workflow in hoa-moe
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
@@ -113,11 +163,3 @@ jobs:
             -H "Authorization: token $GITHUB_TOKEN" \
             https://api.github.com/repos/HITSZ-OpenAuto/hoa-moe/actions/workflows/course.yaml/dispatches \
             -d '{"ref":"main"}'
-
-      - name: Fail CI if formatting/generation failed
-        if: >-
-          steps.rdme.outputs.toml_exists == 'true' &&
-          steps.rdme.outcome != 'success'
-        run: |
-          echo "RDME outcome: ${{ steps.rdme.outcome }}"
-          exit 1
