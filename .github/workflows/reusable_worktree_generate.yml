@@ -28,6 +28,10 @@ on:
         description: 'Personal Access Token'
         required: true
 
+concurrency:
+  group: rdme-worktree-generate-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   generate_worktree_info:
     runs-on: ubuntu-latest
@@ -152,8 +156,8 @@ jobs:
           github.ref == 'refs/heads/main'
         run: |
           set -euo pipefail
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
 
           if [ -e "${{ inputs.toml_path }}" ]; then
             git add "${{ inputs.toml_path }}"
@@ -168,19 +172,10 @@ jobs:
           fi
 
           git commit -m "ci: format toml & regenerate README [automated]"
+
+          # Keep it simple: one rebase + one push.
           git pull --rebase origin main
-
-          for i in 1 2 3; do
-            if git push origin HEAD:main; then
-              exit 0
-            fi
-            echo "Push failed (attempt $i). Retrying..."
-            sleep 2
-            git pull --rebase origin main
-          done
-
-          echo "Push failed after 3 attempts."
-          exit 1
+          git push origin HEAD:main
       
       - name: Fetch and run generate_worktree_info.py script
         run: |
