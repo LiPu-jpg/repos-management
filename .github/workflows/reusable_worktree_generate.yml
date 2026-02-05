@@ -38,26 +38,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Detect TOML/README paths
-        id: rdme
-        run: |
-          toml="readme.toml"
-          readme="README.md"
-
-          if [ -f "$toml" ]; then
-            echo "toml_exists=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "toml_exists=false" >> "$GITHUB_OUTPUT"
-          fi
-
-          if [ -f "$readme" ]; then
-            echo "readme_exists=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "readme_exists=false" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Install Taplo CLI (optional)
-        if: steps.rdme.outputs.toml_exists == 'true'
         continue-on-error: true
         run: |
           ver="0.10.0"
@@ -73,45 +54,13 @@ jobs:
           sudo mv taplo /usr/local/bin/taplo
           taplo --version
 
-      - name: Format TOML (taplo fmt)
-        id: fmt
-        if: steps.rdme.outputs.toml_exists == 'true'
+      - name: RDME autogen (format + generate + warning)
+        id: rdme
         continue-on-error: true
         run: |
-          taplo fmt "readme.toml"
-
-      - name: Generate README from TOML
-        id: gen
-        if: steps.rdme.outputs.toml_exists == 'true'
-        continue-on-error: true
-        run: |
-          curl -Ls -o /tmp/convert_toml_to_readme.py \
-            https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/convert_toml_to_readme.py
-          python3 /tmp/convert_toml_to_readme.py --input "readme.toml" --overwrite
-
-      - name: Clear warning (success only)
-        if: >-
-          steps.rdme.outputs.toml_exists == 'true' &&
-          github.ref == 'refs/heads/main' &&
-          steps.fmt.outcome == 'success' &&
-          steps.gen.outcome == 'success'
-        run: |
-          curl -Ls -o /tmp/readme_warning.py \
-            https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/readme_warning.py
-          python3 /tmp/readme_warning.py --readme "README.md" --clear
-
-      - name: Add warning (failure)
-        if: >-
-          always() &&
-          steps.rdme.outputs.toml_exists == 'true' &&
-          github.ref == 'refs/heads/main' &&
-          (steps.fmt.outcome != 'success' || steps.gen.outcome != 'success')
-        run: |
-          msg="TOML 自动化格式化/生成 README 失败：请检查 readme.toml（并查看 Actions 日志）。"
-
-          curl -Ls -o /tmp/readme_warning.py \
-            https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/readme_warning.py
-          python3 /tmp/readme_warning.py --readme "README.md" --set --message "$msg"
+          curl -Ls -o /tmp/rdme_autogen.py \
+            https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/rdme_autogen.py
+          python3 /tmp/rdme_autogen.py --toml readme.toml --readme README.md
 
       - name: Commit & push TOML/README changes (main only)
         if: >-
@@ -168,8 +117,7 @@ jobs:
       - name: Fail CI if formatting/generation failed
         if: >-
           steps.rdme.outputs.toml_exists == 'true' &&
-          (steps.fmt.outcome != 'success' || steps.gen.outcome != 'success')
+          steps.rdme.outcome != 'success'
         run: |
-          echo "Formatting outcome: ${{ steps.fmt.outcome }}"
-          echo "Generation outcome: ${{ steps.gen.outcome }}"
+          echo "RDME outcome: ${{ steps.rdme.outcome }}"
           exit 1
