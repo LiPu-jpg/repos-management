@@ -38,32 +38,34 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Taplo CLI (optional)
-        continue-on-error: true
-        run: |
-          ver="0.10.0"
-          arch="$(uname -m)"
-          case "$arch" in
-            x86_64) taplo_arch="x86_64";;
-            aarch64|arm64) taplo_arch="aarch64";;
-            *) echo "Unsupported arch: $arch"; exit 1;;
-          esac
-          url="https://github.com/tamasfe/taplo/releases/download/${ver}/taplo-linux-${taplo_arch}.gz"
-          curl -Ls "$url" | gzip -d > taplo
-          chmod +x taplo
-          sudo mv taplo /usr/local/bin/taplo
-          taplo --version
-
       - name: RDME autogen (format + generate + warning)
         id: rdme
         continue-on-error: true
         run: |
+          # Install Taplo CLI (optional): do not fail the step.
+          set +e
+          ver="0.10.0"
+          arch="$(uname -m)"
+          taplo_arch=""
+          if [ "$arch" = "x86_64" ]; then taplo_arch="x86_64"; fi
+          if [ "$arch" = "aarch64" ] || [ "$arch" = "arm64" ]; then taplo_arch="aarch64"; fi
+          if [ -n "$taplo_arch" ]; then
+            url="https://github.com/tamasfe/taplo/releases/download/${ver}/taplo-linux-${taplo_arch}.gz"
+            curl -Ls "$url" | gzip -d > taplo
+            chmod +x taplo
+            sudo mv taplo /usr/local/bin/taplo
+            taplo --version
+          else
+            echo "Unsupported arch: $arch (skip taplo)"
+          fi
+          set -e
+
           curl -Ls -o /tmp/rdme_autogen.py \
-            https://raw.githubusercontent.com/LiPu-jpg/repos-management/feat/toml-autogen-workflow/scripts/rdme_autogen.py
+            https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/rdme_autogen.py
           python3 /tmp/rdme_autogen.py \
             --toml readme.toml \
             --readme README.md \
-            --converter-url https://raw.githubusercontent.com/LiPu-jpg/repos-management/feat/toml-autogen-workflow/scripts/convert_toml_to_readme.py
+            --converter-url https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/convert_toml_to_readme.py
 
       - name: Commit & push TOML/README changes (main only)
         if: >-
@@ -117,12 +119,13 @@ jobs:
       
       - name: Fetch and run generate_worktree_info.py script
         run: |
-          # Download the script
-          curl -o /tmp/generate_worktree_info.py \
-          https://raw.githubusercontent.com/LiPu-jpg/repos-management/feat/toml-autogen-workflow/scripts/generate_worktree_info.py
-          
-          # Make it executable and run it
-          chmod +x /tmp/generate_worktree_info.py
+          curl -Ls -o /tmp/generate_worktree_info.py \
+            https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/generate_worktree_info.py
+
+          # Match generate_worktree_info.py's git identity defaults.
+          git config --local user.email action@github.com
+          git config --local user.name "GitHub Actions"
+
           python3 /tmp/generate_worktree_info.py
 
   trigger_update_repos_list:
