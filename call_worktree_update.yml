@@ -7,6 +7,7 @@ on:
 
 jobs:
   call_reusable_workflow:
+    if: github.actor != 'github-actions[bot]'
     uses: HITSZ-OpenAuto/repos-management/.github/workflows/reusable_worktree_generate.yml@main
     permissions:
       contents: write
