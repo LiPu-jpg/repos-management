@@ -30,6 +30,11 @@ from pathlib import Path
 WARNING_START = "<!-- RDME_TOML_AUTOGEN_WARNING_START -->"
 WARNING_END = "<!-- RDME_TOML_AUTOGEN_WARNING_END -->"
 
+GRADES_SUMMARY_URL = (
+    "https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/"
+    "grades_summary.toml"
+)
+
 
 def _append_github_output(key: str, value: str) -> None:
     out = os.getenv("GITHUB_OUTPUT")
@@ -145,13 +150,24 @@ def main() -> int:
     gen_log = ""
     with tempfile.TemporaryDirectory(prefix="rdme-autogen-") as tmp:
         conv = Path(tmp) / "convert_toml_to_readme.py"
+        grades = Path(tmp) / "grades_summary.toml"
         try:
             _download(args.converter_url, conv)
         except Exception as e:
             gen_ok = False
             gen_log = f"download converter failed: {e}"
         else:
-            gen_ok, gen_log = _run([sys.executable, str(conv), "--input", str(toml_path), "--overwrite"], cwd=repo_root)
+            # Best-effort: download grades summary for badge rendering.
+            try:
+                _download(GRADES_SUMMARY_URL, grades)
+            except Exception:
+                pass
+
+            # Run converter in tmp so it can discover grades_summary.toml from cwd.
+            gen_ok, gen_log = _run(
+                [sys.executable, str(conv), "--input", str(toml_path.resolve()), "--overwrite"],
+                cwd=Path(tmp),
+            )
 
     ok = fmt_ok and gen_ok
 
