@@ -13,9 +13,18 @@ on:
         description: 'Personal Access Token'
         required: true
 
+concurrency:
+  group: rdme-worktree-generate-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  generate_worktree_info:
+  rdme_autogen:
     runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
 
     steps:
       - name: Checkout repository
@@ -28,17 +37,107 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: RDME autogen (format + generate + warning)
+        id: rdme
+        continue-on-error: true
+        run: |
+          # Install Taplo CLI (optional): do not fail the step.
+          set +e
+          ver="0.10.0"
+          arch="$(uname -m)"
+          taplo_arch=""
+          if [ "$arch" = "x86_64" ]; then taplo_arch="x86_64"; fi
+          if [ "$arch" = "aarch64" ] || [ "$arch" = "arm64" ]; then taplo_arch="aarch64"; fi
+          if [ -n "$taplo_arch" ]; then
+            url="https://github.com/tamasfe/taplo/releases/download/${ver}/taplo-linux-${taplo_arch}.gz"
+            curl -Ls "$url" | gzip -d > taplo
+            chmod +x taplo
+            sudo mv taplo /usr/local/bin/taplo
+            taplo --version
+          else
+            echo "Unsupported arch: $arch (skip taplo)"
+          fi
+          set -e
+
+          curl -Ls -o /tmp/rdme_autogen.py \
+            https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/rdme_autogen.py
+          python3 /tmp/rdme_autogen.py \
+            --toml readme.toml \
+            --readme README.md \
+            --converter-url https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/convert_toml_to_readme.py
+
+      - name: Commit & push TOML/README changes (main only)
+        if: >-
+          steps.rdme.outputs.toml_exists == 'true' &&
+          github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          git add readme.toml README.md || true
+
+          if git diff --staged --quiet; then
+            echo "No TOML/README changes to commit."
+            exit 0
+          fi
+
+          git commit -m "ci: format toml & regenerate README [automated]"
+
+          # Keep it simple: one rebase + one push.
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Fail CI if formatting/generation failed
+        if: >-
+          steps.rdme.outputs.toml_exists == 'true' &&
+          steps.rdme.outcome != 'success'
+        run: |
+          echo "RDME outcome: ${{ steps.rdme.outcome }}"
+          exit 1
+
+  worktree_info:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    needs: rdme_autogen
+
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       
       - name: Fetch and run generate_worktree_info.py script
         run: |
-          # Download the script
-          curl -o /tmp/generate_worktree_info.py \
-          https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/generate_worktree_info.py
-          
-          # Make it executable and run it
-          chmod +x /tmp/generate_worktree_info.py
+          curl -Ls -o /tmp/generate_worktree_info.py \
+            https://raw.githubusercontent.com/HITSZ-OpenAuto/repos-management/main/scripts/generate_worktree_info.py
+
+          # Match generate_worktree_info.py's git identity defaults.
+          git config --local user.email action@github.com
+          git config --local user.name "GitHub Actions"
+
           python3 /tmp/generate_worktree_info.py
 
+  trigger_update_repos_list:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    needs: worktree_info
+
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+
+    steps:
       - name: Trigger Update Repositories List workflow
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -49,8 +148,19 @@ jobs:
             https://api.github.com/repos/HITSZ-OpenAuto/repos-management/actions/workflows/update_repos_list.yml/dispatches \
             -d '{"ref":"main"}'
 
-      - name: Trigger workflow in hoa-moe (optional)
-        if: inputs.trigger_page_build
+  trigger_hoa_moe:
+    runs-on: ubuntu-latest
+    if: >-
+      github.actor != 'github-actions[bot]' &&
+      inputs.trigger_page_build
+    needs: trigger_update_repos_list
+
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+
+    steps:
+      - name: Trigger workflow in hoa-moe
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
