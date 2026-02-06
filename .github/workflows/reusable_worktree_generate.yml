@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  rdme_autogen:
+  worktree_update:
     runs-on: ubuntu-latest
     if: github.actor != 'github-actions[bot]'
 
@@ -82,7 +82,8 @@ jobs:
             exit 0
           fi
 
-          git commit -m "ci: format toml & regenerate README [automated]"
+          # Prevent this automated push from re-triggering workflows.
+          git commit -m "ci: format toml & regenerate README [automated] [skip ci]"
 
           # Keep it simple: one rebase + one push.
           git pull --rebase origin main
@@ -96,27 +97,6 @@ jobs:
           echo "RDME outcome: ${{ steps.rdme.outcome }}"
           exit 1
 
-  worktree_info:
-    runs-on: ubuntu-latest
-    if: github.actor != 'github-actions[bot]'
-    needs: rdme_autogen
-
-    defaults:
-      run:
-        shell: bash -euo pipefail {0}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.PAT }}
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      
       - name: Fetch and run generate_worktree_info.py script
         run: |
           curl -Ls -o /tmp/generate_worktree_info.py \
@@ -128,16 +108,6 @@ jobs:
 
           python3 /tmp/generate_worktree_info.py
 
-  trigger_update_repos_list:
-    runs-on: ubuntu-latest
-    if: github.actor != 'github-actions[bot]'
-    needs: worktree_info
-
-    defaults:
-      run:
-        shell: bash -euo pipefail {0}
-
-    steps:
       - name: Trigger Update Repositories List workflow
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -148,19 +118,8 @@ jobs:
             https://api.github.com/repos/HITSZ-OpenAuto/repos-management/actions/workflows/update_repos_list.yml/dispatches \
             -d '{"ref":"main"}'
 
-  trigger_hoa_moe:
-    runs-on: ubuntu-latest
-    if: >-
-      github.actor != 'github-actions[bot]' &&
-      inputs.trigger_page_build
-    needs: trigger_update_repos_list
-
-    defaults:
-      run:
-        shell: bash -euo pipefail {0}
-
-    steps:
       - name: Trigger workflow in hoa-moe
+        if: inputs.trigger_page_build
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
