@@ -279,12 +279,12 @@ def _render_author(author: Any, *, indent: str = "") -> str:
             continue
         disp = f"[{name}]({link})" if (name and link) else (name or link)
         if date:
-            disp = f"{disp}, {date}" if disp else date
+            disp = f"{disp}，{date}" if disp else date
         if disp:
             parts.append(disp)
     if not parts:
         return ""
-    return f"{indent}> 文 / " + ", ".join(parts)
+    return f"{indent}> 文 / " + "，".join(parts)
 
 
 def _render_lecturers(lecturers: Any) -> list[str]:
