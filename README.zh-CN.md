@@ -1,5 +1,3 @@
-<div align="center">
-
 # 组织仓库管理脚本
 
 [中文](README.zh-CN.md) | [English](README.md)
