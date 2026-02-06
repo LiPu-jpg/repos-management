@@ -529,7 +529,13 @@ def render_readme(data: dict, *, toml_path: Path) -> str:
     grades_summary = _load_grades_summary(toml_path)
     if repo_type == "multi-project":
         return render_multi_project(data, grades_summary=grades_summary)
-    if not isinstance(data.get("sections"), list):
+    # Be tolerant for minimal normal repos: allow missing [[sections]] and treat it as empty.
+    # Still fail loudly if sections exists but is not a list (schema corruption).
+    sections_val = data.get("sections")
+    if sections_val is None:
+        data = dict(data)
+        data["sections"] = []
+    elif not isinstance(sections_val, list):
         raise ValueError("normal repo requires unified [[sections]] schema")
     return _render_sections_schema(data, grades_summary=grades_summary)
 
