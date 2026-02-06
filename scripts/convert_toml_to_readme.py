@@ -325,6 +325,44 @@ def _render_lecturers(lecturers: Any) -> list[str]:
     return lines
 
 
+def _render_teachers_with_reviews(teachers: Any) -> list[str]:
+    t_list = [x for x in _as_list(teachers) if isinstance(x, dict)]
+    if not t_list:
+        return []
+
+    lines: list[str] = []
+    for t in t_list:
+        name = _s(t.get("name")).strip()
+        if not name:
+            continue
+        lines.append(f"- {name}")
+
+        reviews = [x for x in _as_list(t.get("reviews")) if isinstance(x, dict)]
+        for rv in reviews:
+            content = _norm_block(rv.get("content"))
+            author = rv.get("author")
+            if not content and not author:
+                continue
+
+            content_lines = content.split("\n") if content else []
+            if content_lines:
+                first = content_lines[0].strip()
+                lines.append(f"  - {first}" if first else "  -")
+                for ln in content_lines[1:]:
+                    if ln.strip() == "":
+                        continue
+                    lines.append("    " + ln)
+            else:
+                lines.append("  -")
+
+            aq = _render_author(author, indent="    ")
+            if aq:
+                lines.append("")
+                lines.append(aq)
+
+    return lines
+
+
 def _render_section_items(items: Any) -> list[dict]:
     out: list[dict] = []
     for it in _as_list(items):
@@ -457,18 +495,12 @@ def render_multi_project(data: dict, *, grades_summary: dict | None = None) -> s
             lines.append("")
             lines.extend(basic_badges)
 
-        teachers = [x for x in _as_list(c.get("teachers")) if isinstance(x, dict)]
-        tnames = [
-            _s(t.get("name")).strip()
-            for t in teachers
-            if isinstance(t, dict) and _s(t.get("name")).strip()
-        ]
-        if tnames:
+        teacher_lines = _render_teachers_with_reviews(c.get("teachers"))
+        if teacher_lines:
             lines.append("")
             lines.append(f"### {header} - 授课教师")
             lines.append("")
-            for tname in tnames:
-                lines.append(f"- {tname}")
+            lines.extend(teacher_lines)
 
         for sec in sections:
             stitle = _s(sec.get("title")).strip() or "章节"
