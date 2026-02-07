@@ -279,12 +279,28 @@ def _render_author(author: Any, *, indent: str = "") -> str:
             continue
         disp = f"[{name}]({link})" if (name and link) else (name or link)
         if date:
-            disp = f"{disp}, {date}" if disp else date
+            disp = f"{disp}，{date}" if disp else date
         if disp:
             parts.append(disp)
     if not parts:
         return ""
-    return f"{indent}> 文 / " + ", ".join(parts)
+    return f"{indent}> 文 / " + "，".join(parts)
+
+
+_LIST_ITEM_PREFIX_RE = re.compile(r"^(?:[-*+]|\d+\.)\s+")
+
+
+def _listify_md_lines(lines: list[str], *, indent: str) -> list[str]:
+    out: list[str] = []
+    for ln in lines:
+        s = _s(ln).strip()
+        if not s:
+            continue
+        if _LIST_ITEM_PREFIX_RE.match(s):
+            out.append(indent + s)
+        else:
+            out.append(indent + "- " + s)
+    return out
 
 
 def _render_lecturers(lecturers: Any) -> list[str]:
@@ -307,19 +323,47 @@ def _render_lecturers(lecturers: Any) -> list[str]:
                 continue
 
             content_lines = content.split("\n") if content else []
-            if content_lines:
-                first = content_lines[0].strip()
-                lines.append(f"  - {first}" if first else "  -")
-                for ln in content_lines[1:]:
-                    if ln.strip() == "":
-                        continue
-                    lines.append("    " + ln)
+            bullet_lines = _listify_md_lines(content_lines, indent="  ")
+            if bullet_lines:
+                lines.extend(bullet_lines)
             else:
                 lines.append("  -")
 
             aq = _render_author(author, indent="    ")
             if aq:
-                lines.append("")
+                lines.append(aq)
+
+    return lines
+
+
+def _render_teachers_with_reviews(teachers: Any) -> list[str]:
+    t_list = [x for x in _as_list(teachers) if isinstance(x, dict)]
+    if not t_list:
+        return []
+
+    lines: list[str] = []
+    for t in t_list:
+        name = _s(t.get("name")).strip()
+        if not name:
+            continue
+        lines.append(f"- {name}")
+
+        reviews = [x for x in _as_list(t.get("reviews")) if isinstance(x, dict)]
+        for rv in reviews:
+            content = _norm_block(rv.get("content"))
+            author = rv.get("author")
+            if not content and not author:
+                continue
+
+            content_lines = content.split("\n") if content else []
+            bullet_lines = _listify_md_lines(content_lines, indent="  ")
+            if bullet_lines:
+                lines.extend(bullet_lines)
+            else:
+                lines.append("  -")
+
+            aq = _render_author(author, indent="    ")
+            if aq:
                 lines.append(aq)
 
     return lines
@@ -529,7 +573,13 @@ def render_readme(data: dict, *, toml_path: Path) -> str:
     grades_summary = _load_grades_summary(toml_path)
     if repo_type == "multi-project":
         return render_multi_project(data, grades_summary=grades_summary)
-    if not isinstance(data.get("sections"), list):
+    # Be tolerant for minimal normal repos: allow missing [[sections]] and treat it as empty.
+    # Still fail loudly if sections exists but is not a list (schema corruption).
+    sections_val = data.get("sections")
+    if sections_val is None:
+        data = dict(data)
+        data["sections"] = []
+    elif not isinstance(sections_val, list):
         raise ValueError("normal repo requires unified [[sections]] schema")
     return _render_sections_schema(data, grades_summary=grades_summary)
 
