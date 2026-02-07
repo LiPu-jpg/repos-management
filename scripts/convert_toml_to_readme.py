@@ -369,6 +369,44 @@ def _render_teachers_with_reviews(teachers: Any) -> list[str]:
     return lines
 
 
+def _render_teachers_with_reviews(teachers: Any) -> list[str]:
+    t_list = [x for x in _as_list(teachers) if isinstance(x, dict)]
+    if not t_list:
+        return []
+
+    lines: list[str] = []
+    for t in t_list:
+        name = _s(t.get("name")).strip()
+        if not name:
+            continue
+        lines.append(f"- {name}")
+
+        reviews = [x for x in _as_list(t.get("reviews")) if isinstance(x, dict)]
+        for rv in reviews:
+            content = _norm_block(rv.get("content"))
+            author = rv.get("author")
+            if not content and not author:
+                continue
+
+            content_lines = content.split("\n") if content else []
+            if content_lines:
+                first = content_lines[0].strip()
+                lines.append(f"  - {first}" if first else "  -")
+                for ln in content_lines[1:]:
+                    if ln.strip() == "":
+                        continue
+                    lines.append("    " + ln)
+            else:
+                lines.append("  -")
+
+            aq = _render_author(author, indent="    ")
+            if aq:
+                lines.append("")
+                lines.append(aq)
+
+    return lines
+
+
 def _render_section_items(items: Any) -> list[dict]:
     out: list[dict] = []
     for it in _as_list(items):
