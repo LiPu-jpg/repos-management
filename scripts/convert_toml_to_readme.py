@@ -287,6 +287,22 @@ def _render_author(author: Any, *, indent: str = "") -> str:
     return f"{indent}> 文 / " + "，".join(parts)
 
 
+_LIST_ITEM_PREFIX_RE = re.compile(r"^(?:[-*+]|\d+\.)\s+")
+
+
+def _listify_md_lines(lines: list[str], *, indent: str) -> list[str]:
+    out: list[str] = []
+    for ln in lines:
+        s = _s(ln).strip()
+        if not s:
+            continue
+        if _LIST_ITEM_PREFIX_RE.match(s):
+            out.append(indent + s)
+        else:
+            out.append(indent + "- " + s)
+    return out
+
+
 def _render_lecturers(lecturers: Any) -> list[str]:
     lec_list = [x for x in _as_list(lecturers) if isinstance(x, dict)]
     if not lec_list:
@@ -307,19 +323,14 @@ def _render_lecturers(lecturers: Any) -> list[str]:
                 continue
 
             content_lines = content.split("\n") if content else []
-            if content_lines:
-                first = content_lines[0].strip()
-                lines.append(f"  - {first}" if first else "  -")
-                for ln in content_lines[1:]:
-                    if ln.strip() == "":
-                        continue
-                    lines.append("    " + ln)
+            bullet_lines = _listify_md_lines(content_lines, indent="  ")
+            if bullet_lines:
+                lines.extend(bullet_lines)
             else:
                 lines.append("  -")
 
             aq = _render_author(author, indent="    ")
             if aq:
-                lines.append("")
                 lines.append(aq)
 
     return lines
@@ -345,19 +356,14 @@ def _render_teachers_with_reviews(teachers: Any) -> list[str]:
                 continue
 
             content_lines = content.split("\n") if content else []
-            if content_lines:
-                first = content_lines[0].strip()
-                lines.append(f"  - {first}" if first else "  -")
-                for ln in content_lines[1:]:
-                    if ln.strip() == "":
-                        continue
-                    lines.append("    " + ln)
+            bullet_lines = _listify_md_lines(content_lines, indent="  ")
+            if bullet_lines:
+                lines.extend(bullet_lines)
             else:
                 lines.append("  -")
 
             aq = _render_author(author, indent="    ")
             if aq:
-                lines.append("")
                 lines.append(aq)
 
     return lines
